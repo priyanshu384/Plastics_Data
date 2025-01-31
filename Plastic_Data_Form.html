@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plastic Data Collection App</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        form {
+            background-color: #fff;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-control {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="date"], input[type="time"], input[type="tel"], input[type="number"], select, textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #e9ecef;
+        }
+        #image-preview {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Plastic Data Collection</h2>
+        <form id="dataForm" method="POST" action="https://script.google.com/macros/s/AKfycbw6ioyZeenM7541XKsO_dZ7ii8wjK3JtGL7G6Kung_Xkrbg0Zu17BNjOsZOJA7z2xf8/exec">
+            <div class="form-control">
+                <label for="investigator-name">Name of the Investigator</label>
+                <input type="text" name="investigator-name" id="investigator-name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-control">
+                <label for="village-name">Name of the Village</label>
+                <input type="text" name="village-name" id="village-name" placeholder="Enter village name" required>
+            </div>
+
+            <div class="form-control">
+                <label for="block-name">Name of the Block/Tehsil/District</label>
+                <input type="text" name="block-name" id="block-name" placeholder="Enter block/tehsil/district name" required>
+            </div>
+
+            <div class="form-control">
+                <label for="latitude">Latitude</label>
+                <input type="number" step="any" name="latitude" id="latitude" placeholder="Enter latitude" required>
+            </div>
+
+            <div class="form-control">
+                <label for="longitude">Longitude</label>
+                <input type="number" step="any" name="longitude" id="longitude" placeholder="Enter longitude" required>
+            </div>
+
+            <button type="button" onclick="getLocation()">Get Current Location</button>
+
+            <div class="form-control">
+                <label for="survey-date">Date of Survey</label>
+                <input type="date" name="survey-date" id="survey-date" required>
+            </div>
+
+            <div class="form-control">
+                <label for="survey-time">Time of Survey</label>
+                <input type="time" name="survey-time" id="survey-time" required>
+            </div>
+
+            <div class="form-control">
+                <label for="mobile-number">Mobile Number</label>
+                <input type="tel" name="mobile-number" id="mobile-number" placeholder="Enter mobile number" required pattern="[0-9]{10}">
+            </div>
+
+    <!-- Source of Plastic Waste Section -->
+<div class='form-control'>
+    <label for='plastic-waste-source'>Source of Plastic Waste</label>
+    <select name="plastic-waste-source" id='plastic-waste-source' onchange='toggleOtherSource()' required>
+        <option value='' disabled selected>Select source of plastic waste</option>
+        <option value='Domestic'>Domestic</option>
+        <option value='Commercial'>Commercial</option>
+        <option value='Industrial'>Industrial</option>
+        <option value='other'>Other (please specify)</option>
+    </select>
+
+    <!-- Input box for other source -->
+    <input type='text' name='other-source-text' id='other-source-text' placeholder='Please specify' style='display:none;'>
+</div>
+
+
+
+
+            <div class="form-control">
+                <label for="plastic-form">Form of Plastic Waste</label>
+                <select name="plastic-form" id="plastic-form" onchange="toggleOtherForm()" required>
+                    <option value="" disabled selected>Select form of plastic waste</option>
+                    <option value="Bottles">Bottles</option>
+                    <option value="Bags">Bags</option>
+                    <option value="Wrappers">Wrappers</option>
+                    <option value="Straws">Straws</option>
+                    <option value="Cups/Plates">Cups/Plates</option>
+                    <option value="Fishing Gear">Fishing Gear (net, ropes, etc.)</option>
+                    <option value="other">Other (please specify)</option>
+                </select>
+                <input type="text" name="other-form-text" id="other-form-text" placeholder="Please specify" style="display:none;">
+            </div>
+
+            <div class="form-control">
+                <label for="quantity-waste">Quantity of Waste (in kg)</label>
+                <input type="number" step="any" name="quantity-waste" id="quantity-waste" placeholder="Enter quantity of waste in kg" required min="0">
+            </div>
+
+            <div class="form-control">
+                <label for="recyclable-waste">Is the Waste Recyclable?</label>
+                <select name="recyclable-waste" id="recyclable-waste" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-control">
+                <label for="proximity-plastic-waste">Proximity to Plastic Waste (in meters)</label>
+                <input type="number" name="proximity-plastic-waste" id="proximity-plastic-waste" placeholder="Enter proximity to plastic waste in meters" required min="0">
+            </div>
+
+            <div class="form-control">
+                <label for="land-use">Surrounding Land Use</label>
+                <select name="land-use" id="land-use" onchange="toggleOtherLandUse()" required>
+                    <option value="" disabled selected>Select surrounding land use</option>
+                    <option value="Residential">Residential</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Recreational">Recreational (Beaches)</option>
+                    <option value="other">Other (please specify)</option>
+                    <input type="text" name="other-land-text" id="other-land-text" placeholder="Please specify" style="display:none;">
+
+		</select>
+                
+            </div>
+
+            <div class="form-control">
+                <label for="weather-condition">Weather Condition</label>
+                <select name="weather-condition" id="weather-condition" required>
+                    <option value="" disabled selected>Select weather condition</option>
+                    <option value="Sunny">Sunny</option>
+                    <option value="Cloudy">Cloudy</option>
+                    <option value="Rainy">Rainy</option>
+                    <option value="Windy">Windy</option>
+                </select>
+            </div>
+
+            <div class="form-control">
+                <label for="tide-info">Tide Information</label>
+                <textarea name="tide-info" id="tide-info" rows="3" placeholder="Enter tide information"></textarea>
+            </div>
+
+            <div class="form-control">
+                <label for="social-activities">Nearby Social Activities</label>
+                <textarea name="social-activities" id="social-activities" rows="3" placeholder="Describe nearby social activities"></textarea>
+            </div>
+
+            <div class ='form-control'>
+         <label>Condition of Plastic Waste:</label>
+         Floating
+         &nbsp;<input type ="radio" name ="plastic-condition" value ="Floating">
+         &nbsp;Underwater
+         &nbsp;<input type ="radio" name ="plastic-condition" value ="Underwater">
+         &nbsp;On the Side
+         &nbsp;<input type ="radio" name ="plastic-condition" value ="On the Side"><br/>
+     </div>
+		
+		
+		<div class="form-control">
+		<label>Wildlife Presence: (Ecological Parameters)</label>
+		<input type="checkbox" name="wildlife-presence[]" value="Seabird"> Seabird
+		<input type="checkbox" name="wildlife-presence[]" value="Turtle"> Turtle
+		<input type="checkbox" name="wildlife-presence[]" value="Fish"> Fish</br>
+		<!-- Input box for additional comments about wildlife presence -->
+         Please provide additional details:
+         <textarea id="wildlife-details" rows="3" placeholder="Describe wildlife presence"></textarea> 
+     </div>
+	 
+	 
+	<div class="form-control">
+    <label>Flow Pattern</label>
+    <input type="checkbox" name="flow-pattern[]" value="Waves"> Waves
+    <input type="checkbox" name="flow-pattern[]" value="Sea"> Sea
+    <input type="checkbox" name="flow-pattern[]" value="River"> River
+    <br />
+    <!-- Input box for additional comments about flow pattern -->
+    <label for="flow-pattern-details">Please provide additional details:</label>
+    <textarea id="flow-pattern-details" rows="3" placeholder="Describe Flow Pattern"></textarea>
+</div>
+
+            <div class ='form-control'>
+         <label for ='waste-management-infrastructure'>Is there any Waste Management Infrastructure present?</label>
+         Yes
+         &nbsp;<input type ="radio" name ="waste-management-infrastructure" value ="Yes">
+         &nbsp;No
+         &nbsp;<input type ="radio" name ="waste-management-infrastructure" value ="No"><br />
+         
+        </div>
+	 
+			<div class="form-control">
+			<label for="extra-comments">Additional Comments</label>
+			<textarea id="extra-comments" rows="4" placeholder="Provide any extra comments or details here"></textarea>
+			</div>
+
+
+            <div class="form-control">
+                <label for="image-upload">Upload an Image</label>
+                <input type="file" name="image" id="image-upload" accept="image/*" capture="camera" onchange="previewImage(event)">
+                <img id="image-preview" src="" alt="Image Preview" style="display:none;">
+            </div>
+
+            <button type="submit">Submit Survey</button>
+        </form>
+    </div>
+
+ <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById('latitude').value = position.coords.latitude;
+                    document.getElementById('longitude').value = position.coords.longitude;
+                }, function(error) {
+                    console.error("Error obtaining location:", error);
+                    alert("Unable to retrieve your location. Please check your browser settings.");
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+
+
+
+function toggleOtherSource() {
+    var select = document.getElementById('plastic-waste-source');
+    var otherSourceInput = document.getElementById('other-source-text');
+
+    if (select.value === 'other') {
+        otherSourceInput.style.display = 'block';
+        otherSourceInput.setAttribute('name', 'plastic-waste-source'); // Include in form submission
+    } else {
+        otherSourceInput.style.display = 'none';
+        otherSourceInput.removeAttribute('name'); // Do not submit if not needed
+    }
+}
+
+
+
+        function toggleOtherForm() {
+            const form = document.getElementById('plastic-form');
+            const otherInput = document.getElementById('other-form-text');
+            otherInput.style.display = form.value === 'other' ? 'block' : 'none';
+        }
+
+        function toggleOtherLandUse() {
+            const landUse = document.getElementById('land-use');
+            const otherInput = document.getElementById('other-land-text');
+            otherInput.style.display = landUse.value === 'other' ? 'block' : 'none';
+        }
+
+        function previewImage(event) {
+            const preview = document.getElementById('image-preview');
+            const file = event.target.files[0];
+            if (file) {
+                preview.style.display = 'block';
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        document.getElementById('dataForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevent default form submission
+
+    const form = e.target; // Get the form element
+    const formData = new FormData(form); // Create FormData to capture form data
+
+
+    // Handle the 'Other' input field if it is visible and has a value
+    const otherSourceInput = document.getElementById('other-source-text');
+    if (otherSourceInput.style.display !== 'none' && otherSourceInput.value) {
+        formData.set('plastic-waste-source', otherSourceInput.value); // Manually set 'Other' value
+    }
+
+    const otherFormInput = document.getElementById('other-form-text');
+    if (otherFormInput.style.display !== 'none' && otherFormInput.value) {
+        formData.set('plastic-form', otherFormInput.value); // Manually set 'Other' value
+    }
+	
+
+    const landuseInput = document.getElementById('other-land-text');
+    if (landuseInput.style.display !== 'none' && landuseInput.value) {
+        formData.set('land-use', landuseInput.value); // Manually set 'Other' value
+    }
+
+		const plasticCondition = document.querySelector('input[name="plastic-condition"]:checked');
+		if (plasticCondition) {
+        formData.set('plastic-condition', plasticCondition.value);
+    }
+	
+	
+	
+		// Handle multiple checkbox values (wildlife presence)
+		const wildlifeCheckboxes = document.querySelectorAll('input[name="wildlife-presence[]"]:checked');
+		const wildlifeValues = Array.from(wildlifeCheckboxes).map(cb => cb.value).join(', ');
+
+		// Get additional details from the text area	
+		const wildlifeDetails = document.getElementById('wildlife-details').value;
+
+		// Combine both values
+		const fullWildlifeData = wildlifeValues + (wildlifeDetails ? `, Details: ${wildlifeDetails}` : '');
+
+		// Add to formData
+		formData.set('wildlife-presence', fullWildlifeData);
+		
+		// Select all checked checkboxes with the correct name
+		const flowPatternCheckboxes = document.querySelectorAll('input[name="flow-pattern[]"]:checked');
+
+		// Get the values of selected checkboxes
+		const flowPatternValues = Array.from(flowPatternCheckboxes).map(cb => cb.value).join(', ');
+
+		// Get additional details from the textarea
+		const flowPatternDetails = document.getElementById('flow-pattern-details').value.trim();
+
+		// Combine both checkbox values and additional details
+		const fullFlowPatternData = flowPatternValues || flowPatternDetails ? `${flowPatternValues}${flowPatternDetails ? `, Details: ${flowPatternDetails}` : ''}` : '';
+
+		// Add to formData
+		formData.set('flow-pattern', fullFlowPatternData);
+
+		   
+
+    // Get the value from the "Additional Comments" textarea
+    const extraComments = document.getElementById("extra-comments").value.trim();
+    
+    // Add it to formData
+    formData.set("extra-comments", extraComments);
+
+const imageFile = document.getElementById('image-upload').files[0];
+    
+    try {
+        if (imageFile) {
+            // Convert image to base64
+            const base64Image = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(imageFile);
+            });
+            
+            formData.set('image', base64Image);
+        }
+
+        // Convert FormData to URLSearchParams
+        const data = new URLSearchParams();
+        for (const [key, value] of formData.entries()) {
+            data.append(key, value);
+        }
+
+        // Submit the form
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: data
+        });
+
+        const result = await response.json();
+        console.log(result);
+
+        if (result.result === 'success') {
+            alert('Data submitted successfully!');
+            form.reset();
+            document.getElementById('image-preview').style.display = 'none';
+        } else {
+            alert(`Error: ${result.error}`);
+        }
+    } catch (error) {
+        console.error('Submission error:', error);
+        alert(`Failed to submit data: ${error.message}`);
+    }
+});
+    </script>
+</body>
+</html>
